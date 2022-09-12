@@ -34,4 +34,4 @@ Nama user | string | Asep
 level user | string | Manager
 
 ## Mockup UX
-![Alur aplikasi](mockup.jpeg)
+![Alur aplikasi](mockup.jpg)
