@@ -361,6 +361,39 @@ app.post("/updateTempat", upload.single("gambar"), (req, res) => {
     });
 });
 
+app.get('/informasiTempat/:nama_tempat', (req, res) => {
+    const nama_tempat = req.params.nama_tempat;
+    console.log(nama_tempat)
+
+    const sqlQuery = `SELECT id_tempat, nama_tempat, lokasi, kota, provinsi, gambar, ST_AsText(koordinat) AS koordinat, nama_ekspedisi, kode_pos, keterangan_gambar
+    FROM public.tempat WHERE nama_tempat LIKE '%${nama_tempat}%'`;
+    console.log(sqlQuery)
+    db.query(sqlQuery, (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                message: "Ada kesalahan",
+                error: err,
+            });
+        } else {
+            let fileUrl;
+            let response = result.rows
+            response.forEach(data => {
+                if (data.gambar) {
+                    fileUrl = data.gambar;
+                    fileUrl = fileUrl.replaceAll(" ", "%20");
+                    // console.log(fileUrl);
+
+                    data.gambar = req.protocol + "://" + req.get("host") + "/" + fileUrl;
+                }
+                else{
+                    data.gambar = req.protocol + "://" + req.get("host") + "/no_image.png";
+                }
+            });
+            res.send(response);
+        }
+    });
+});
+
 // get search (alamat lokasi)
 app.get("/readLokasi", (req, res) => {
     let tampil =[];

@@ -137,7 +137,8 @@
 
     <div class="search d-flex">
       <input id="auto-complete" type="text" placeholder="Search..." style="color: rgba(134, 134, 134, 1);">
-      <i class="fa-solid fa-magnifying-glass" style="padding-top: 15px; padding-right: 20px; color: #64B5F6;"></i>
+      <i class="fa-solid fa-magnifying-glass" style="padding-top: 15px; padding-right: 20px; color: #64B5F6;"
+        onclick="myFunction()"></i>
     </div>
 
     <div class="filter d-flex">
@@ -153,7 +154,7 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" id="content">
       <% datas.forEach((data) => { %>
       <div class="card my-3">
         <div class="row g-0">
@@ -209,6 +210,40 @@
     );
 
     console.log($("#auto-complete"))
+
+    function myFunction() {
+      var nama_tempat = $("#auto-complete").val()
+      console.log(nama_tempat)
+      fetch("http://localhost:3100/informasiTempat/" + nama_tempat )
+        .then((response) => {
+          return response.json()
+        }).then((jRes) => {
+          console.log(jRes)
+          $("#content").empty()
+          jRes.forEach(data => {
+            $("#content").append('<div class="card my-3">'+
+'        <div class="row g-0">'+
+'          <div class="col-4">'+
+'            <img src="'+data.gambar+'" class="img-fluid" style="padding-top: 16%;" alt="...">'+
+'          </div>'+
+'          <div class="col-8">'+
+'            <div class="card-body">'+
+'              <a href="detail/'+data.id_tempat+'" style="color: #64B5F6;">'+
+'                <h5 class="card-title">'+data.nama_tempat+'</h5>'+
+'              </a>'+
+'              <p class="card-text"><small class="text-muted">'+data.koordinat+'</small></p>'+
+'              <div class="ikon">'+
+'                <a href="edit/'+data.id_tempat+'" style="color: #64B5F6;"><i'+
+'                    class="fa-solid fa-pen-to-square "></i></a>'+
+'                <a href="delete/'+data.id_tempat+'" style="color: #64B5F6;"><i class="fa-solid fa-trash"></i></a>'+
+'              </div>'+
+'            </div>'+
+'          </div>'+
+'        </div>'+
+'      </div>')
+          });
+        })
+    }
   </script>
 </body>
 

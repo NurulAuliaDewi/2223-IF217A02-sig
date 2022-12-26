@@ -90,7 +90,7 @@
             <div class="mt-5 d-flex flex-coloum justify-content-center ">
                 <div class="profile-picture">
                     <img src="<%= foto_pengguna %>" width="120px" height="120px" alt="Avatar" class="img-profile ">
-                    <input id="inputTag" type="file" onchange="previewFile(this);" />
+                    <input id="inputTag" type="file" name="gambar" onchange="previewFile(this);" />
                     <label for="inputTag">
                         <img src="/assets/kamera.png" class="img-icon">
                     </label>
@@ -99,11 +99,11 @@
 
             <div class="content mt-3">
                 <label class="form-label">Nama</label>
-                <input type="text" value="<%= nama_pengguna %>" class="form-control" style="border-color: #64B5F6;">
+                <input type="text" name="nama_pengguna" value="<%= nama_pengguna %>" class="form-control" style="border-color: #64B5F6;">
                 <label class="form-label">Email</label>
-                <input type="text" value="<%= email_pengguna %>" class="form-control" style="border-color: #64B5F6;">
+                <input type="text" name="email_pengguna" value="<%= email_pengguna %>" class="form-control" style="border-color: #64B5F6;">
                 <label class="form-label">Password</label>
-                <input type="password" value="<%= password_pengguna %>" class="form-control"
+                <input type="password" name="password_pengguna" value="<%= password_pengguna %>" class="form-control"
                     style="border-color: #64B5F6;">
             </div>
 
@@ -154,13 +154,14 @@
 
                 // Get form
                 var form = $('#form')[0];
+
                 console.log(form)
 
                 // Create an FormData object 
                 var data = new FormData(form);
 
                 // If you want to add an extra field for the FormData
-                data.append("id_tempat", "This is some extra data, testing");
+                data.append("username_pengguna", "<%=username_pengguna%>");
 
                 // disabled the submit button
                 $("#btnSubmit").prop("disabled", true);
@@ -176,10 +177,14 @@
                     timeout: 600000,
                     success: function (data) {
 
-                        $("#result").text(data);
+                        // $("#result").text(data);
                         console.log("SUCCESS : ", data);
                         $("#btnSubmit").prop("disabled", false);
-                        window.location = '/user_info';
+                        
+                        setTimeout(()=> {
+                            window.location = '/user_info';
+
+                        },1000)
 
                     },
                     error: function (e) {
